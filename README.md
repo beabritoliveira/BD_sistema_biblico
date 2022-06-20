@@ -1,4 +1,4 @@
-# Sistema Biblíco 
+# Sistema Bíblico 
 #### Grupo: Beatriz Brito Oliveira, Leonarda Saad, Arthur Buback, Kimberly Scaldaferro, Camila, Rafael 
 #### Turma: CC1MB
 ---------------------------------
