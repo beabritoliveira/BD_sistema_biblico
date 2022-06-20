@@ -1,1 +1,7 @@
-# BD_sistema_biblico
+# Sistema Biblíco 
+#### Beatriz Brito Oliveira
+#### Leonarda Saad
+#### Arthur Buback 
+#### Kmberly Scaldaferro 
+#### Camila 
+#### Rafael 
