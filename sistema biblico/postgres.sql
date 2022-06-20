@@ -38,7 +38,7 @@ CREATE TABLE eliana.data_relevante (
                 mes REAL,
                 ano INTEGER,
                 tempo CHAR(2),
-                cod_profecia INTEGER NOT NULL,
+                cod_profecia INTEGER NOT NULL check (cod_profecia in('AC', 'DC')) ,
                 CONSTRAINT pk_data_relevante PRIMARY KEY (cod_data)
 );
 COMMENT ON TABLE eliana.data_relevante IS 'É a tabela que armazena informações sobre datas relevantes';
@@ -48,6 +48,7 @@ COMMENT ON COLUMN eliana.data_relevante.mes IS 'Mês em que o evento aconteceu';
 COMMENT ON COLUMN eliana.data_relevante.ano IS 'Ano em que o evento aconteceu';
 COMMENT ON COLUMN eliana.data_relevante.tempo IS 'Tempo em que o evento aconteceu. Checar se o preenchido é AC ou DC';
 COMMENT ON COLUMN eliana.data_relevante.cod_profecia IS 'Código da profecia. É uma fk da tabela.';
+
 
 
 CREATE TABLE eliana.versiculos (
