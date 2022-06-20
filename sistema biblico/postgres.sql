@@ -12,7 +12,7 @@ encoding = 'UTF-8'
 lc_collate = 'pt_BR.UTF-8'
 lc_ctype = 'pt_BR.UTF-8'
 ;
-\c "dbname =biblico user= grupo password=123456"
+\c "dbname=biblico user=grupo password=123456"
 
 CREATE SCHEMA eliana AUTHORIZATION grupo;
 
@@ -38,7 +38,7 @@ CREATE TABLE eliana.data_relevante (
                 dia REAL,
                 mes REAL,
                 ano INTEGER,
-                tempo CHAR(2),
+                tempo CHAR(2) CHECK (tempo in('AC', 'DC')),
                 cod_profecia INTEGER NOT NULL,
                 CONSTRAINT pk_data_relevante PRIMARY KEY (cod_data)
 );
