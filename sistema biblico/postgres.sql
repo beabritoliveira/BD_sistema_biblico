@@ -14,6 +14,13 @@ lc_ctype = 'pt_BR.UTF-8'
 ;
 \c "dbname =biblico user= grupo password=123456"
 
+CREATE SCHEMA eliana AUTHORIZATION grupo;
+
+ALTER USER grupo SET 
+SEARCH_PATH to eliana, "grupo", public;
+
+SET SEARCH_PATH to eliana, "grupo", public;
+
 CREATE TABLE eliana.profecia (
                 cod_profecia INTEGER NOT NULL,
                 nome_profecia VARCHAR(60) NOT NULL,
