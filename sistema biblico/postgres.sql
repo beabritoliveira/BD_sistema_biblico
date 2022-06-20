@@ -19,6 +19,7 @@ ALTER USER grupo SET
 SEARCH_PATH to eliana, "grupo", public;
 SET SEARCH_PATH to eliana, "grupo", public;
 
+
 CREATE TABLE eliana.profecia (
                 cod_profecia INTEGER NOT NULL,
                 nome_profecia VARCHAR(60) NOT NULL,
@@ -29,6 +30,7 @@ COMMENT ON TABLE eliana.profecia IS 'Tabela que armazena informações sobre pro
 COMMENT ON COLUMN eliana.profecia.cod_profecia IS 'Código da profecia. É a pk da tabela.';
 COMMENT ON COLUMN eliana.profecia.nome_profecia IS 'Nome da profecia';
 COMMENT ON COLUMN eliana.profecia.descricao_profecia IS 'Descrição da profecia';
+
 
 CREATE TABLE eliana.data_relevante (
                 cod_data INTEGER NOT NULL,
@@ -46,6 +48,7 @@ COMMENT ON COLUMN eliana.data_relevante.mes IS 'Mês em que o evento aconteceu';
 COMMENT ON COLUMN eliana.data_relevante.ano IS 'Ano em que o evento aconteceu';
 COMMENT ON COLUMN eliana.data_relevante.tempo IS 'Tempo em que o evento aconteceu. Checar se o preenchido é AC ou DC';
 COMMENT ON COLUMN eliana.data_relevante.cod_profecia IS 'Código da profecia. É uma fk da tabela.';
+
 
 CREATE TABLE eliana.versiculos (
                 cod_versiculos INTEGER NOT NULL,
@@ -66,22 +69,6 @@ COMMENT ON COLUMN eliana.versiculos.reflexao_tema IS 'Reflexão sobre o tema do 
 COMMENT ON COLUMN eliana.versiculos.cod_profecia IS 'Código da profecia. É uma fk da tabela.';
 COMMENT ON COLUMN eliana.versiculos.cod_data IS 'Código da data. É uma fk da tabela';
 
-CREATE TABLE eliana.capitulos (
-                cod_capitulo INTEGER NOT NULL,
-                nome_capitulo VARCHAR(60) NOT NULL,
-                quant_versiculos INTEGER NOT NULL,
-                categoria VARCHAR(20) NOT NULL,
-                reflexao_tema VARCHAR(100) NOT NULL,
-                cod_versiculos INTEGER NOT NULL,
-                CONSTRAINT pk_capitulos PRIMARY KEY (cod_capitulo)
-);
-COMMENT ON TABLE eliana.capitulos IS 'Tabela em que armazena as informações sobre os capítulos';
-COMMENT ON COLUMN eliana.capitulos.cod_capitulo IS 'Código do capítulo. É a pk da tabela capítulo.';
-COMMENT ON COLUMN eliana.capitulos.nome_capitulo IS 'Nome do capítulo';
-COMMENT ON COLUMN eliana.capitulos.quant_versiculos IS 'Quantidade de versículos';
-COMMENT ON COLUMN eliana.capitulos.categoria IS 'Categoria do livro';
-COMMENT ON COLUMN eliana.capitulos.reflexao_tema IS 'Reflexão sobre o tema.';
-COMMENT ON COLUMN eliana.capitulos.cod_versiculos IS 'Código versículo. É uma fk da tabela';
 
 CREATE TABLE eliana.mapas (
                 cod_mapa INTEGER NOT NULL,
@@ -108,6 +95,7 @@ COMMENT ON COLUMN eliana.mapas.temp_maxima IS 'Temperatura máxima';
 COMMENT ON COLUMN eliana.mapas.temp_minima IS 'Temperatura mínima';
 COMMENT ON COLUMN eliana.mapas.cod_versiculos IS 'Código versículo. É uma fk da tabela';
 
+
 CREATE TABLE eliana.fatos_relevantes (
                 cod_fatos INTEGER NOT NULL,
                 nome_fatos VARCHAR(60) NOT NULL,
@@ -121,12 +109,12 @@ COMMENT ON COLUMN eliana.fatos_relevantes.nome_fatos IS 'Nome dos fatos.';
 COMMENT ON COLUMN eliana.fatos_relevantes.descricao_fatos IS 'Descrição dos fatos.';
 COMMENT ON COLUMN eliana.fatos_relevantes.cod_versiculos IS 'Código versículo. É uma fk da tabela.';
 
+
 CREATE TABLE eliana.pessoas (
                 cod_pessoas INTEGER NOT NULL,
                 nome_pessoas VARCHAR(60) NOT NULL,
                 idade INTEGER,
                 loc_nascimento VARCHAR(100),
-                cod_ascensor INTEGER NOT NULL,
                 cod_fatos INTEGER NOT NULL,
                 CONSTRAINT pk_pessoas PRIMARY KEY (cod_pessoas)
 );
@@ -135,8 +123,18 @@ COMMENT ON COLUMN eliana.pessoas.cod_pessoas IS 'Código das pessoas. É a pk da
 COMMENT ON COLUMN eliana.pessoas.nome_pessoas IS 'Nome das pessoas';
 COMMENT ON COLUMN eliana.pessoas.idade IS 'Idade das pessoas';
 COMMENT ON COLUMN eliana.pessoas.loc_nascimento IS 'Local de nascimento das pessoas';
-COMMENT ON COLUMN eliana.pessoas.cod_ascensor IS 'Código das pessoas que auxíliou sua ascensão. É uma fk da tabela.';
 COMMENT ON COLUMN eliana.pessoas.cod_fatos IS 'Código dos fatos. É uma fk da tabela';
+
+
+CREATE TABLE eliana.p_ascendem (
+                cod_pessoas INTEGER NOT NULL,
+                cod_ascensor INTEGER NOT NULL,
+                CONSTRAINT pk_p_ascendem PRIMARY KEY (cod_pessoas, cod_ascensor)
+);
+COMMENT ON TABLE eliana.p_ascendem IS 'Tabela que armazena informações sobre pessoas ascendendo outras pessoas';
+COMMENT ON COLUMN eliana.p_ascendem.cod_pessoas IS 'Código das pessoas que ascenderam. É a pk da tabela pessoas.';
+COMMENT ON COLUMN eliana.p_ascendem.cod_ascensor IS 'Código das pessoas que auxiliou a ascender. É a pk da tabela pessoas.';
+
 
 CREATE TABLE eliana.p_local_habitado (
                 cod_pessoas INTEGER NOT NULL,
@@ -146,6 +144,7 @@ CREATE TABLE eliana.p_local_habitado (
 COMMENT ON TABLE eliana.p_local_habitado IS 'Tabela que armazena as localizações em que as pessoas já habitaram';
 COMMENT ON COLUMN eliana.p_local_habitado.cod_pessoas IS 'Código das pessoas. É a pk da tabela local e também uma fk que referencia a tabela pessoas';
 COMMENT ON COLUMN eliana.p_local_habitado.loc_habitou IS 'Local onde a pessoa já habitou';
+
 
 CREATE TABLE eliana.plano_leitura (
                 cod_plano INTEGER NOT NULL,
@@ -157,6 +156,7 @@ COMMENT ON TABLE eliana.plano_leitura IS 'Tabela que armazena as informações s
 COMMENT ON COLUMN eliana.plano_leitura.cod_plano IS 'Código do plano de leitura. É a PK da tabela, elemento identificador do plano de leitura.';
 COMMENT ON COLUMN eliana.plano_leitura.obj_p_leitura IS 'O objetivo do plano de leitura';
 COMMENT ON COLUMN eliana.plano_leitura.duracao IS 'Tempo de duração do plano de leitura';
+
 
 CREATE TABLE eliana.livros (
                 cod_livro INTEGER NOT NULL,
@@ -177,14 +177,26 @@ COMMENT ON COLUMN eliana.livros.abreviatura IS 'Abreviatura do livro';
 COMMENT ON COLUMN eliana.livros.cod_plano IS 'Código do plano de leitura. É uma fK da tabela.';
 COMMENT ON COLUMN eliana.livros.cod_pessoas IS 'Código das pessoas. É uma fk da tabela';
 
-CREATE TABLE eliana.capitulos_livros (
-                cod_livro INTEGER NOT NULL,
+
+CREATE TABLE eliana.capitulos (
                 cod_capitulo INTEGER NOT NULL,
-                CONSTRAINT pk_capitulos_livros PRIMARY KEY (cod_livro, cod_capitulo)
+                cod_livro INTEGER NOT NULL,
+                nome_capitulo VARCHAR(60) NOT NULL,
+                quant_versiculos INTEGER NOT NULL,
+                categoria VARCHAR(20) NOT NULL,
+                reflexao_tema VARCHAR(100) NOT NULL,
+                cod_versiculos INTEGER NOT NULL,
+                CONSTRAINT pk_capitulos PRIMARY KEY (cod_capitulo, cod_livro)
 );
-COMMENT ON TABLE eliana.capitulos_livros IS 'Tabela em que armazena as informações sobre os capítulos e livros ao mesmo tempo';
-COMMENT ON COLUMN eliana.capitulos_livros.cod_livro IS 'Código dos livros. É a pk da tabela e também uma fk, por referenciar a tabela livros';
-COMMENT ON COLUMN eliana.capitulos_livros.cod_capitulo IS 'Código do capítulo. É a pk da tabela e também uma fk por referenciar a tabela capitulos';
+COMMENT ON TABLE eliana.capitulos IS 'Tabela em que armazena as informações sobre os capítulos';
+COMMENT ON COLUMN eliana.capitulos.cod_capitulo IS 'Código do capítulo. É a pk da tabela capítulo.';
+COMMENT ON COLUMN eliana.capitulos.cod_livro IS 'Código dos livros. É a pk da tabela e também uma fk, por referenciar a tabela livros';
+COMMENT ON COLUMN eliana.capitulos.nome_capitulo IS 'Nome do capítulo';
+COMMENT ON COLUMN eliana.capitulos.quant_versiculos IS 'Quantidade de versículos';
+COMMENT ON COLUMN eliana.capitulos.categoria IS 'Categoria do livro';
+COMMENT ON COLUMN eliana.capitulos.reflexao_tema IS 'Reflexão sobre o tema.';
+COMMENT ON COLUMN eliana.capitulos.cod_versiculos IS 'Código versículo. É uma fk da tabela';
+
 
 ALTER TABLE eliana.data_relevante ADD CONSTRAINT profecia_data_relevante_fk
 FOREIGN KEY (cod_profecia)
@@ -228,13 +240,6 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE eliana.capitulos_livros ADD CONSTRAINT capitulos_1_capitulos_livros_fk
-FOREIGN KEY (cod_capitulo)
-REFERENCES eliana.capitulos (cod_capitulo)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
 ALTER TABLE eliana.pessoas ADD CONSTRAINT fatos_relevantes_pessoas_fk
 FOREIGN KEY (cod_fatos)
 REFERENCES eliana.fatos_relevantes (cod_fatos)
@@ -249,15 +254,22 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE eliana.pessoas ADD CONSTRAINT pessoas_pessoas_fk
-FOREIGN KEY (cod_ascensor)
+ALTER TABLE eliana.p_local_habitado ADD CONSTRAINT pessoas_local_fk
+FOREIGN KEY (cod_pessoas)
 REFERENCES eliana.pessoas (cod_pessoas)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE eliana.p_local_habitado ADD CONSTRAINT pessoas_local_fk
+ALTER TABLE eliana.p_ascendem ADD CONSTRAINT pessoas_p_ascendem_fk
 FOREIGN KEY (cod_pessoas)
+REFERENCES eliana.pessoas (cod_pessoas)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE eliana.p_ascendem ADD CONSTRAINT pessoas_p_ascendem_fk1
+FOREIGN KEY (cod_ascensor)
 REFERENCES eliana.pessoas (cod_pessoas)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
@@ -270,7 +282,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE eliana.capitulos_livros ADD CONSTRAINT livros_capitulos_fk
+ALTER TABLE eliana.capitulos ADD CONSTRAINT livros_capitulos_fk
 FOREIGN KEY (cod_livro)
 REFERENCES eliana.livros (cod_livro)
 ON DELETE NO ACTION
